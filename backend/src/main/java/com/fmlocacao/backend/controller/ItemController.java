@@ -7,22 +7,42 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // Fala pro Spring: "Eu sou o cara que recebe pedidos da internet"
-@RequestMapping("/itens") // O endereço será: localhost:8080/itens
+@RestController
+@RequestMapping("/itens")
+@CrossOrigin(origins = "*")
 public class ItemController {
 
-    @Autowired // Injeta o repository aqui dentro automaticamente
+    @Autowired
     private ItemRepository repository;
 
-    // 1. Rota para Listar Tudo (GET)
+    // Listar Tudo
     @GetMapping
     public List<Item> listarTodos() {
         return repository.findAll();
     }
 
-    // 2. Rota para Cadastrar (POST)
+    // Buscar UM item específico (Para edição)
+    @GetMapping("/{id}")
+    public Item buscarPorId(@PathVariable Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    // Criar Novo
     @PostMapping
     public Item cadastrar(@RequestBody Item item) {
         return repository.save(item);
+    }
+
+    // Atualizar Existente
+    @PutMapping("/{id}")
+    public Item atualizar(@PathVariable Long id, @RequestBody Item item) {
+        item.setId(id); // Garante que vai atualizar o ID certo
+        return repository.save(item);
+    }
+
+    // Deletar
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id) {
+        repository.deleteById(id);
     }
 }

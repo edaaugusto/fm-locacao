@@ -1,27 +1,32 @@
 package com.fmlocacao.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Data; 
-import java.math.BigDecimal;
+import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity // Avisa o Spring para criar uma tabela disso
-@Table(name = "tb_itens") // Nome da tabela no banco
-@Data // O Lombok cria os Getters e Setters sozinho
+@Entity
+@Data
 public class Item {
 
-    @Id // Chave primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremento (1, 2, 3...)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false) // Obrigatório ter nome
     private String nome;
-
-    @Column(columnDefinition = "TEXT") // Permite textos longos na descrição
+    
+    @Column(columnDefinition = "TEXT") // Permite textos longos
     private String descricao;
+    
+    private String categoria;
+    private String tamanho;
+    private String material;
+    private boolean disponivel = true;
 
-    private BigDecimal preco; // Preço da locação
-
-    private String imagemUrl; // Link da foto do produto
-
-    private Boolean disponivel = true; // Se está livre para alugar
+    // --- MUDANÇA PRINCIPAL: LISTA DE IMAGENS ---
+    // @ElementCollection cria uma tabela extra só para guardar as URLs/Base64 das fotos
+    @ElementCollection
+    @CollectionTable(name = "item_imagens", joinColumns = @JoinColumn(name = "item_id"))
+    @Column(name = "imagem", columnDefinition = "LONGTEXT") // LONGTEXT para caber a foto em Base64
+    private List<String> imagens = new ArrayList<>();
 }

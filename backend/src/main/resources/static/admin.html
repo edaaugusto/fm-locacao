@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - FM Locação</title>
+    
+    <!-- Link para o CSS separado (Estilo visual) -->
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+    
+    <!-- Link para o JS separado (Lógica de carregar, editar, excluir) -->
+    <script src="js/admin-dashboard.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>FM Locação</h1>
+            <!-- O JS vai atualizar este texto -->
+            <span id="contador" style="font-size: 0.9rem; color: #7f8c8d;">Carregando...</span>
+        </div>
+        
+        <div class="header-actions">
+            <a href="/" class="btn-link">Ver Site</a>
+            <!-- Botão que leva para o Wizard de cadastro -->
+            <a href="cadastro.html" class="btn-add">+ Novo Item</a>
+        </div>
+    </header>
+
+    <!-- Feedback de carregamento (O JS esconde isso quando terminar) -->
+    <div id="loading">Carregando produtos...</div>
+
+    <!-- O JS vai preencher esta div com os Cards -->
+    <div id="gridProdutos" class="grid-produtos"></div>
+
+</body>
+</html>

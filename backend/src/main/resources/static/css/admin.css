@@ -1,0 +1,94 @@
+/* --- LAYOUT GERAL --- */
+.admin-container {
+    max-width: 1100px; margin: 2rem auto; padding: 0 1rem;
+}
+
+/* Wizard Container (Passo a Passo) */
+.wizard-container {
+    background: white; padding: 3rem; border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-width: 600px; margin: 2rem auto; text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Modo Expandido (Última etapa) */
+.wizard-container.final-mode {
+    max-width: 1100px; text-align: left; padding: 2rem;
+}
+
+.step-title { font-size: 1.8rem; color: #1e3a8a; margin-bottom: 1rem; font-weight: bold; }
+.step-subtitle { color: #666; margin-bottom: 2rem; }
+
+/* Inputs Gigantes (Etapas 1, 2, 3) */
+.big-input {
+    width: 100%; padding: 15px; font-size: 1.2rem; border: 2px solid #ddd;
+    border-radius: 8px; text-align: center; transition: 0.3s;
+}
+.big-input:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 4px rgba(59,130,246,0.1); }
+
+.big-select {
+    width: 100%; padding: 15px; font-size: 1.1rem; border: 2px solid #ddd;
+    border-radius: 8px; background: white; cursor: pointer;
+}
+
+/* Botões de Navegação */
+.nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; gap: 10px; }
+
+.btn-next {
+    background: #1e3a8a; color: white; border: none; padding: 12px 30px;
+    border-radius: 8px; font-size: 1rem; cursor: pointer; flex: 1; font-weight: bold;
+    transition: 0.2s;
+}
+.btn-next:hover { background: #1e40af; transform: translateY(-2px); }
+
+.btn-back {
+    background: transparent; color: #666; border: 2px solid #ddd; padding: 12px 20px;
+    border-radius: 8px; font-size: 1rem; cursor: pointer; font-weight: bold;
+}
+.btn-back:hover { background: #f3f4f6; }
+
+/* Barra de Progresso */
+.progress-bar { height: 6px; background: #e5e7eb; border-radius: 10px; margin-bottom: 2rem; overflow: hidden; }
+.progress-fill { height: 100%; background: #22c55e; width: 25%; transition: width 0.4s ease; }
+
+/* Animação de Troca de Etapa */
+.step-content { display: none; animation: fadeIn 0.5s; }
+.step-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- ESTILOS DO PAINEL FINAL --- */
+.admin-layout { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; }
+.admin-formulario { flex: 2; min-width: 300px; }
+.admin-previa { flex: 1; min-width: 300px; background-color: #f3f4f6; padding: 20px; border-radius: 10px; border: 2px dashed #d1d5db; display: flex; flex-direction: column; align-items: center; }
+
+.label { display: block; font-weight: bold; margin-bottom: 0.5rem; color: #444; font-size: 0.9rem; }
+.input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; margin-bottom: 10px; }
+
+/* Upload de Fotos */
+.upload-area { border: 2px dashed #cbd5e1; padding: 20px; text-align: center; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #f8fafc; }
+.upload-area:hover { border-color: #3b82f6; background: #eff6ff; }
+.thumbs-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.thumb-wrapper { position: relative; width: 60px; height: 60px; border-radius: 4px; overflow: hidden; border: 1px solid #ddd; }
+.thumb-img { width: 100%; height: 100%; object-fit: cover; }
+.thumb-remove { position: absolute; top: 0; right: 0; background: red; color: white; width: 15px; height: 15px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+/* Toggle & Area Dinamica */
+.toggle-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.toggle-checkbox { height: 0; width: 0; visibility: hidden; position: absolute; }
+.toggle-label { cursor: pointer; text-indent: -9999px; width: 40px; height: 20px; background: grey; display: block; border-radius: 100px; position: relative; transition: 0.3s; }
+.toggle-label:after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 90px; transition: 0.3s; }
+.toggle-checkbox:checked + .toggle-label { background: #3b82f6; }
+.toggle-checkbox:checked + .toggle-label:after { left: calc(100% - 2px); transform: translateX(-100%); }
+.area-medidas { opacity: 1; max-height: 200px; overflow: hidden; transition: all 0.3s ease-in-out; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
+.area-medidas.escondido { opacity: 0; max-height: 0; padding: 0; border: none; margin: 0; }
+
+/* Carrossel na Prévia */
+.card-img-wrapper { height: 200px; background-color: #ddd; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.carousel-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.carousel-img.active { display: block; }
+.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background-color: white; color: #333; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.25); opacity: 0.9; z-index: 20; }
+.carousel-btn:hover { background-color: #1e3a8a; color: white; opacity: 1; transform: translateY(-50%) scale(1.1); }
+.prev { left: 10px; padding-right: 2px; } .next { right: 10px; padding-left: 2px; }
+.carousel-dots { position: absolute; bottom: 10px; width: 100%; text-align: center; z-index: 20; }
+.dot { height: 6px; width: 6px; background-color: rgba(255,255,255,0.6); border-radius: 50%; display: inline-block; margin: 0 3px; }
+.dot.active { background-color: white; transform: scale(1.3); }

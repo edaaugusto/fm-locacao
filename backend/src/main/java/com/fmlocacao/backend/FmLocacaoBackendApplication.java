@@ -7,19 +7,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.math.BigDecimal;
+import java.util.Collections;
 
 @SpringBootApplication
-public class FmLocacaoBackendApplication implements CommandLineRunner { // Mudei aqui para o seu nome
+public class FmLocacaoBackendApplication implements CommandLineRunner {
 
 	@Autowired
 	private ItemRepository repository;
 
 	public static void main(String[] args) {
-		SpringApplication.run(FmLocacaoBackendApplication.class, args); // Mudei aqui também
+		SpringApplication.run(FmLocacaoBackendApplication.class, args);
 		
 		System.out.println("\n\n----------------------------------------------------------");
-		System.out.println("  APLICAÇÃO RODANDO! ACESSE: http://localhost:8080/itens");
+		System.out.println("  APLICAÇÃO RODANDO! ACESSE: http://localhost:8080/");
 		System.out.println("----------------------------------------------------------\n");
 	}
 
@@ -30,18 +30,23 @@ public class FmLocacaoBackendApplication implements CommandLineRunner { // Mudei
 		// 1. Verifica se já tem algo no banco para não duplicar
 		if (repository.count() == 0) {
 			
-			// 2. Cria um produto novo na memória do Java
-			Item mesa = new Item();
-			mesa.setNome("Mesa de Plástico Branca");
-			mesa.setDescricao("Mesa quadrada resistente, ideal para festas. 70x70cm.");
-			mesa.setPreco(new BigDecimal("15.00")); // R$ 15,00 a diária
-			mesa.setImagemUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_x228gWvC5eXm2_rN_w&s");
-			mesa.setDisponivel(true);
+			// 2. Cria um produto novo compatível com a NOVA estrutura
+			Item item = new Item();
+			item.setNome("Mesa de Plástico (Exemplo)");
+			item.setDescricao("Mesa quadrada resistente, cadastro automático de teste.");
+			item.setCategoria("Mesas");
+			item.setTamanho("70x70cm");
+			item.setMaterial("Plástico");
+			item.setDisponivel(true);
 
-			// 3. Manda o Repository salvar no Banco de Dados
-			repository.save(mesa);
+			// Como agora é uma lista de imagens, usamos assim:
+			// (Usando uma imagem genérica da internet para não quebrar)
+			item.setImagens(Collections.singletonList("https://cdn.pixabay.com/photo/2016/11/19/15/50/chair-1839753_1280.jpg"));
+
+			// 3. Salva no Banco
+			repository.save(item);
 			
-			System.out.println(">>> SUCESSO: Primeiro produto cadastrado automaticamente! <<<");
+			System.out.println(">>> SUCESSO: Banco populado com item atualizado! <<<");
 		}
 	}
 }

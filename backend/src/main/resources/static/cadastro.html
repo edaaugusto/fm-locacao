@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - F M Locação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/admin.js" defer></script>
+</head>
+<body class="bg-gray-100">
+
+    <header class="cabecalho">
+        <div class="logo">
+            <h1 id="tituloPagina">NOVO CADASTRO</h1>
+        </div>
+        <a href="admin.html" style="color: white; text-decoration: none; font-weight: bold;">&larr; Voltar ao Painel</a>
+    </header>
+
+    <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:50; text-align:center; padding-top:20%;">
+        <p class="text-xl font-bold text-blue-900 animate-pulse">Carregando dados do produto...</p>
+    </div>
+
+    <!-- WIZARD (Conteúdo igual ao anterior, mas o ID do form mudou para formFinal) -->
+    <div id="mainContainer" class="wizard-container">
+        <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+
+        <!-- ETAPA 1 -->
+        <div id="step1" class="step-content active">
+            <h2 class="step-title">Identificação</h2>
+            <p class="step-subtitle">Nome do produto</p>
+            <input type="text" id="inputNomeStep1" class="big-input" placeholder="Ex: Mesa De Jantar" oninput="padronizarInput(this)">
+            <div class="nav-buttons" style="justify-content: center;"><button onclick="nextStep(2)" class="btn-next">Próximo &rarr;</button></div>
+        </div>
+
+        <!-- ETAPA 2 -->
+        <div id="step2" class="step-content">
+            <h2 class="step-title">Categoria</h2>
+            <p class="step-subtitle">Onde se encaixa?</p>
+            <select id="inputCategoriaStep2" class="big-select">
+                <option value="" disabled selected>-- Selecione --</option>
+                <optgroup label="Móveis"><option value="Mesas">Mesas</option><option value="Cadeiras">Cadeiras</option><option value="Aparadores">Aparadores</option></optgroup>
+                <optgroup label="Mesa Posta"><option value="Louças">Louças</option><option value="Talheres">Talheres</option><option value="Copos e Taças">Copos e Taças</option></optgroup>
+                <optgroup label="Outros"><option value="Têxtil">Têxtil</option><option value="Decoração">Decoração</option><option value="Vasilhames">Vasilhames</option></optgroup>
+            </select>
+            <div class="nav-buttons"><button onclick="prevStep(1)" class="btn-back">&larr;</button><button onclick="nextStep(3)" class="btn-next">Próximo &rarr;</button></div>
+        </div>
+
+        <!-- ETAPA 3 -->
+        <div id="step3" class="step-content">
+            <h2 class="step-title">Material</h2>
+            <p class="step-subtitle">Principal composição</p>
+            <select id="inputMaterialStep3" class="big-select">
+                <option value="" disabled selected>-- Selecione --</option>
+                <option value="Madeira">Madeira</option><option value="Ferro">Ferro</option><option value="Plástico">Plástico</option>
+                <option value="Porcelana">Porcelana</option><option value="Vidro">Vidro</option><option value="Inox">Inox</option>
+                <option value="Tecido">Tecido</option><option value="Cerâmica">Cerâmica</option><option value="Cristal">Cristal</option>
+            </select>
+            <div class="nav-buttons"><button onclick="prevStep(2)" class="btn-back">&larr;</button><button onclick="nextStep(4)" class="btn-next">Revisar &rarr;</button></div>
+        </div>
+
+        <!-- ETAPA FINAL -->
+        <div id="step4" class="step-content">
+            <div class="admin-layout">
+                <section class="admin-formulario">
+                    <form id="formFinal">
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <div style="flex: 2;"><label class="label">Nome</label><input type="text" id="nomeFinal" class="input" oninput="padronizarInput(this); gerarPrevia()"></div>
+                            <div style="flex: 1;"><label class="label">Categoria</label><select id="categoriaFinal" class="input" onchange="mudarCampos(); gerarPrevia()"><optgroup label="Móveis"><option value="Mesas">Mesas</option><option value="Cadeiras">Cadeiras</option></optgroup><optgroup label="Mesa Posta"><option value="Louças">Louças</option><option value="Talheres">Talheres</option></optgroup></select></div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <label class="label">Fotos (Máx: 6)</label>
+                            <input type="file" id="inputFotos" accept="image/*" multiple style="display: none;" onchange="processarFotos(this)">
+                            <div class="upload-area" onclick="document.getElementById('inputFotos').click()"><p style="color: #64748b; font-weight: bold;">📷 Gerenciar Fotos</p></div>
+                            <div id="listaFotos" class="thumbs-container"></div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start;">
+                            <div style="flex: 1.5;">
+                                <div class="toggle-wrapper"><input type="checkbox" id="usarMedidas" class="toggle-checkbox" checked onchange="toggleMedidas(); gerarPrevia()"><label for="usarMedidas" class="toggle-label">Toggle</label><span class="toggle-text text-sm">Medidas?</span></div>
+                                <div id="containerDinamico" class="area-medidas"></div>
+                            </div>
+                            <div style="flex: 1;"><label class="label">Material</label><select id="materialFinal" class="input" onchange="gerarPrevia()"><option value="Madeira">Madeira</option><option value="Plástico">Plástico</option></select></div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;"><label class="label">Descrição</label><textarea id="descricao" class="input" rows="3" oninput="gerarPrevia()"></textarea></div>
+
+                        <button type="submit" class="btn-next" style="width: 100%; background-color: #166534;" id="btnSalvarTexto">💾 CONCLUIR CADASTRO</button>
+                    </form>
+                </section>
+                <section class="admin-previa"><span class="text-xs font-bold text-gray-500 uppercase mb-2">Pré-visualização</span><div id="cardPreview" class="card-produto"></div></section>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
